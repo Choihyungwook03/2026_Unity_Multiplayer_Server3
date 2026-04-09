@@ -16,16 +16,106 @@ public class SimplePlayer : NetworkBehaviour
     [Networked] private TickTimer FireCooldown { get; set; }
     [SerializeField] private float fireInterval = 0.2f;
 
+    [SerializeField] private Animator animator;
+    [Networked] private float MoveSpeedNet { get; set; }
+
+    [Header("Jump")]
+    [SerializeField] private float jumpForce = 6f;
+    [SerializeField] private float gravity = -20f;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private LayerMask groundMask;
+
+    [Networked] private int JumpTick { get; set; }
+    private int _lastRenderedJumpTick = -1;
+
+    [Networked] private float VerticalVelocity { get; set; }
+    [Networked] private NetworkBool IsGroundedNet { get; set; }
+    [Networked] private NetworkBool JumpTriggeredNet { get; set; }
+    [Networked] private NetworkButtons PreviousButtons { get; set; }
+
+    private int _lastJumpVisualTick = -1;
+
+    [SerializeField] private GameObject CameraRoot;
+    private Transform cameraTransform;
+
+    public override void Spawned()
+    {
+        if (CameraRoot == null) return;
+
+        bool isMine = Object.HasInputAuthority;
+        CameraRoot.SetActive(isMine);
+
+        if (isMine)
+        {
+            Camera cam = CameraRoot.GetComponentInChildren<Camera>(true);
+            if (cam)
+            {
+                cameraTransform = cam.transform;
+            }
+        }
+    }
+
     public override void FixedUpdateNetwork()
     {
         if (GetInput<FusionBootStrap.NetworkInputData>(out var inputData))
         {
             Vector3 move = new Vector3(inputData.move.x, 0f, inputData.move.y);
 
+            if (Object.HasInputAuthority && cameraTransform != null)
+            {
+                Vector3 forward = cameraTransform.forward;
+                forward.y = 0f; 
+                forward.Normalize();
+
+                Vector3 right = Vector3.Cross(forward, Vector3.up).normalized;
+
+                move = forward * inputData.move.y - right * inputData.move.x;
+            }
+
+            else
+            {
+                move = new Vector3(inputData.move.x, 0.0f, inputData.move.y);
+            }
+
             if (move.sqrMagnitude > 1f)
                 move.Normalize();
 
-            transform.position += move * moveSpeed * Runner.DeltaTime;
+            MoveSpeedNet = move.magnitude;
+
+            bool grounded = Physics.CheckSphere(
+                groundCheck != null ? groundCheck.position : transform.position + Vector3.down * 0.9f,
+                groundCheckRadius,
+                groundMask
+            );
+
+            IsGroundedNet = grounded;
+
+            if(grounded && VerticalVelocity < 0.0f)
+            {
+                VerticalVelocity = 0f;
+            }
+
+            if (grounded && inputData.buttons.WasPressed(PreviousButtons, (int)FusionBootStrap.InputButton.Jump))
+            {
+                VerticalVelocity = jumpForce;
+                IsGroundedNet = false;
+                grounded = false;
+                JumpTick = Runner.Tick;
+            }
+
+            VerticalVelocity += gravity * Runner.DeltaTime;
+
+            Vector3 horizontalMove = new Vector3(move.x * moveSpeed, 0f, move.z * moveSpeed);
+            transform.position += horizontalMove * Runner.DeltaTime;
+
+            if(!(grounded && VerticalVelocity <= 0f))
+            {
+                Vector3 verticalMove = new Vector3(0f, VerticalVelocity, 0f);
+                transform.position += verticalMove * Runner.DeltaTime;
+            }
+
+            PreviousButtons = inputData.buttons;
 
             if (move.sqrMagnitude > 0.001f)
             {
@@ -110,5 +200,16 @@ public class SimplePlayer : NetworkBehaviour
         if (EffectManager.Instance == null)
             return;
         EffectManager.Instance.PlayerWorldEffect(EffectManager.Instance.HitEffect, pos, normal);
+    }
+
+    public override void Render()
+    {
+        if (animator == null) return;
+
+        animator.SetFloat("Speed", MoveSpeedNet);
+        animator.SetBool("Grounded", !IsGroundedNet);
+        animator.SetBool("Jump", !IsGroundedNet && VerticalVelocity > 0.1f);
+        animator.SetBool("FreeFall", !IsGroundedNet && VerticalVelocity <= 0.1f);
+        animator.SetFloat("MotionSpeed", 3f);
     }
 }

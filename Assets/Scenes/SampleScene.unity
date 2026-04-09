@@ -706,7 +706,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1048,7 +1048,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1181,7 +1181,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1369,10 +1369,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1910258780302384397, guid: 9645c15b681712248b1db0d0025d88a8, type: 3}
       propertyPath: NetworkedBehaviours.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -1910258780302384397, guid: 9645c15b681712248b1db0d0025d88a8, type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4231275024729220315}
+    - target: {fileID: -1910258780302384397, guid: 9645c15b681712248b1db0d0025d88a8, type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[1]'
+      value: 
+      objectReference: {fileID: 4231275024729220314}
+    - target: {fileID: -1910258780302384397, guid: 9645c15b681712248b1db0d0025d88a8, type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4231275024729220313}
+    - target: {fileID: -1910258780302384397, guid: 9645c15b681712248b1db0d0025d88a8, type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[3]'
       value: 
       objectReference: {fileID: 4231275024729220312}
     - target: {fileID: 8241730327663076955, guid: 9645c15b681712248b1db0d0025d88a8, type: 3}
@@ -1449,6 +1461,39 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &4231275024729220313 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1203814928555204623, guid: 9645c15b681712248b1db0d0025d88a8, type: 3}
+  m_PrefabInstance: {fileID: 4231275024729220310}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4231275024729220311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bce6bf44298445e499fac92c18671d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthTarget
+--- !u!114 &4231275024729220314 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3828836276919219840, guid: 9645c15b681712248b1db0d0025d88a8, type: 3}
+  m_PrefabInstance: {fileID: 4231275024729220310}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4231275024729220311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1039544458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fusion.Runtime.dll::Fusion.HitboxRoot
+--- !u!114 &4231275024729220315 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 974067182847273608, guid: 9645c15b681712248b1db0d0025d88a8, type: 3}
+  m_PrefabInstance: {fileID: 4231275024729220310}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4231275024729220311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b45f97155de3174388d676a825415a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimplePlayer
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

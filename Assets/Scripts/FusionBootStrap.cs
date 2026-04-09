@@ -26,6 +26,7 @@ public class FusionBootStrap : MonoBehaviour, INetworkRunnerCallbacks
     public enum InputButton
     {
         Fire = 0,
+        Jump = 1
     }
 
     public void StartHost() => _ = StartGame(GameMode.Host);
@@ -69,7 +70,7 @@ public class FusionBootStrap : MonoBehaviour, INetworkRunnerCallbacks
     {
         Debug.Log($"플레이어 입장 : {player}");
 
-        if (runner.IsServer == false)
+        if (!runner.IsServer)
             return;
 
         Vector3 spawnPos = GetSpawnPosition(player);
@@ -106,6 +107,7 @@ public class FusionBootStrap : MonoBehaviour, INetworkRunnerCallbacks
 
         var buttons = new NetworkButtons();
         buttons.Set((int)InputButton.Fire, Input.GetMouseButton(0));
+        buttons.Set((int)InputButton.Jump, Input.GetKey(KeyCode.Space));
 
         data.buttons = buttons;
 
