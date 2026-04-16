@@ -262,7 +262,7 @@ public class SimplePlayer : NetworkBehaviour
 
     void TryPickupBox()
     {
-        if (!Object.HasInputAuthority) return;
+        if (!Object.HasStateAuthority) return;
 
         if (HeldBox != null) return;
 
@@ -283,7 +283,7 @@ public class SimplePlayer : NetworkBehaviour
 
     private bool TryDropHeldBox()
     {
-        if (!Object.HasInputAuthority)
+        if (!Object.HasStateAuthority)
             return false;
 
         if( HeldBox == null) 

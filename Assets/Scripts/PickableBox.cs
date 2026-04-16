@@ -62,9 +62,11 @@ public class PickableBox : NetworkBehaviour
 
         if (rb != null)
         {
+            rb.isKinematic = false; 
+
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = false;
+
             rb.AddForce(impulse, ForceMode.VelocityChange);
         }
     }
