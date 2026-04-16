@@ -15,18 +15,26 @@ public class FusionBootStrap : MonoBehaviour, INetworkRunnerCallbacks
     [SerializeField] private NetworkPrefabRef playerPrefab;
     [SerializeField] private Transform[] spawnPoints;
 
+    [Header("Pickable Box")]
+    [SerializeField] private NetworkPrefabRef pickableBoxPrefab;
+    [SerializeField] private Transform[] boxSpawnPoints;
+
+    private bool boxesSpawned = false;
+
     private Dictionary<PlayerRef, NetworkObject> playerObjects = new();
 
     public struct NetworkInputData : INetworkInput
     {
         public Vector2 move;
+        public float cameraYaw;
         public NetworkButtons buttons;
     }
 
     public enum InputButton
     {
         Fire = 0,
-        Jump = 1
+        Jump = 1,
+        Pickup = 2
     }
 
     public void StartHost() => _ = StartGame(GameMode.Host);
@@ -61,9 +69,36 @@ public class FusionBootStrap : MonoBehaviour, INetworkRunnerCallbacks
         });
 
         if (result.Ok)
+        {
             Debug.Log($"[Fusion] StartGame OK - {mode} / {sessionName}");
+
+            if (runner.IsServer)
+            {
+                SpawnBoxes();
+            }
+        }
         else
             Debug.LogError($"[Fusion] StartGame FAILED - {result.ShutdownReason}");
+    }
+
+    public void SpawnBoxes()
+    {
+        if (!runner.IsServer) return;
+
+        if (boxesSpawned) return;
+
+        boxesSpawned = true;
+
+        if (boxSpawnPoints == null || boxSpawnPoints.Length == 0) return;
+
+        foreach(var point in boxSpawnPoints)
+        {
+            if (point == null) continue;
+
+            runner.Spawn(pickableBoxPrefab, point.position, point.rotation, null);
+        }
+
+        Debug.Log($"상자 {boxSpawnPoints.Length} 개 생성 완료");
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
@@ -82,6 +117,7 @@ public class FusionBootStrap : MonoBehaviour, INetworkRunnerCallbacks
             player
         );
         playerObjects[player] = obj;
+        runner.SetPlayerObject(player, obj);
     }
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     { 
@@ -105,9 +141,12 @@ public class FusionBootStrap : MonoBehaviour, INetworkRunnerCallbacks
             Input.GetAxisRaw("Vertical")
             );
 
+        data.cameraYaw = SimplePlayer.LocalCameraYaw;
+
         var buttons = new NetworkButtons();
         buttons.Set((int)InputButton.Fire, Input.GetMouseButton(0));
         buttons.Set((int)InputButton.Jump, Input.GetKey(KeyCode.Space));
+        buttons.Set((int)InputButton.Pickup, Input.GetKey(KeyCode.E));
 
         data.buttons = buttons;
 

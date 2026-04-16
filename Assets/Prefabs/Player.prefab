@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 218304669834560876}
   serializedVersion: 2
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 3, z: -3}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -144,6 +144,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2410510546103422776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6631352226761800261}
+  m_Layer: 0
+  m_Name: HoldPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6631352226761800261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2410510546103422776}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8952158852534222670}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4424909885338250542
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +293,7 @@ Transform:
   m_GameObject: {fileID: 5680467703883509083}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -414,6 +445,7 @@ Transform:
   - {fileID: 4356035873330694467}
   - {fileID: 5363760776390354454}
   - {fileID: 8072272282313328598}
+  - {fileID: 6631352226761800261}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5525303284302691552
@@ -566,6 +598,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   CameraRoot: {fileID: 218304669834560876}
+  cameraFollowOffset: {x: 0, y: 1.5, z: 0}
+  cameraSenesitivity: 3
+  minPitch: -30
+  maxPitch: 60
+  holdPoint: {fileID: 6631352226761800261}
+  pickupDistance: 3
+  dropForce: 2
+  pickupMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &3828836276919219840
 MonoBehaviour:
   m_ObjectHideFlags: 0
